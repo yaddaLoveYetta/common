@@ -2,27 +2,39 @@ package com.yadda.stack;
 
 /**
  * @author yadda<silenceisok@163.com>
- * @since 2017/12/22
+ * @since 2018/1/4
  */
-public interface Stack<T extends Comparable<T>> {
+public interface Stack<T> {
     /**
      * 入栈
      *
-     * @param t
+     * @param t T
      */
     void push(T t);
 
     /**
-     * 出栈
+     * 获取栈顶元素
      *
      * @return
      */
     T pop();
 
     /**
-     * 获取最小栈
+     * 查找某个元素在栈中的位置,找不到返回-1
+     * <p>
+     * 1:从栈顶开始找
+     * 2:返回第一次元素出现的位置
+     *
+     * @param t
+     * @return
+     */
+    int search(T t);
+
+    /**
+     * 栈元素个数
      *
      * @return
      */
-    T getMin();
+    int size();
+
 }
