@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<a href="javascript:;">点击换一张</a>
+
+<script type="application/javascript">
+
+    window.onload = function () {
+
+
+        function draw() {
+
+
+            // 获取画布
+            var canvas = document.getElementById('canvas');
+            //设置画布宽度-高度
+            canvas.width = 120;
+            canvas.height = 40;
+            // 获取画布上下文用于作画
+            var context = canvas.getContext("2d");
+            // 设置画笔颜色
+            context.strokeStyle = "#0000ff";
+            // 画一个矩形
+            context.strokeRect(0, 0, 120, 40);
+
+            var char = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+            // 画字
+            for (var i = 0; i < 4; i++) {
+
+                var x = Math.floor(20 * i + 20);
+                var y = 20;// Math.floor(10 + Math.random() * 10);
+                var angle = Math.floor(90 * Math.random() * (Math.PI / 180));
+                // 随机下标
+                var index = Math.floor(Math.random() * char.length);
+                var word = char[index];
+                context.font = "28px Arial";
+
+                // 平移画布
+                context.translate(x, y);
+                // 旋转一个随机角度
+                context.rotate(angle);
+
+                context.fillStyle = getRandomColor();
+                // 因为画布已经位移及旋转，在0,0位置画字
+                context.fillText(word, 0, 0);
+
+                //画布归位
+                context.rotate(-angle);
+                context.translate(-x, -y);
+
+            }
+
+            // 画干扰线
+            for (var i = 0; i < 4; i++) {
+
+                var x = Math.random() * 120;
+                var y = Math.random() * 40;
+                var xTo = Math.random() * 120;
+                var yTo = Math.random() * 40;
+
+                context.strokeStyle = getRandomColor();
+                context.moveTo(x, y);
+                context.lineTo(xTo, yTo);
+                context.stroke();
+            }
+            // 画干扰点
+            for (var i = 0; i < 20; i++) {
+
+                var x = Math.random() * 120;
+                var y = Math.random() * 40;
+                var xTo = x + 1;
+                var yTo = y + 1;
+
+                //context.lineWidth = 10;
+                context.strokeStyle = getRandomColor();
+                context.moveTo(x, y);
+                context.lineTo(xTo, yTo);
+                context.stroke();
+            }
+
+            function getRandomColor() {
+
+                var r = Math.floor(Math.random() * 256);
+                var g = Math.floor(Math.random() * 256);
+                var b = Math.floor(Math.random() * 256);
+
+                return "rgb(" + r + "," + g + "," + b + ")";
+            }
+        }
+
+        var a = document.getElementsByTagName('a');
+        a[0].onclick = function () {
+            draw();
+        }
+        draw();
+    }
+</script>
+</body>
+</html>

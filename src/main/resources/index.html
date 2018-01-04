@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form onsubmit="return false;" action="">
+    <h1>webScoket</h1>
+    <textarea id="msgTxt" cols="100" rows="30"></textarea>
+    <br>
+    <input type="text" name="msg" id="msg" style="width: 300px">
+    <input type="button" id="send" value="发送" onclick="send(this.form.msg.value);">
+    <input type="button" id="clean" value="清空" onclick="">
+
+    <script type="application/javascript">
+
+        window.onload = function () {
+            document.getElementById('msgTxt').value = '';
+
+            var socket;
+
+            if (!window.WebSocket) {
+                window.WebSocket = window.MozWebSocket;
+            }
+
+            if (window.WebSocket) {
+                socket = new WebSocket("ws://localhost:8002/chat");
+                socket.onmessage = function (event) {
+                    var ta = document.getElementById('msgTxt');
+                    ta.value = ta.value + '\n' + event.data;
+                }
+
+                socket.onopen = function (event) {
+                    var ta = document.getElementById('msgTxt');
+                    ta.value = "已连接服务器";
+                }
+                socket.onclose = function (event) {
+                    var ta = document.getElementById('msgTxt');
+                    ta.value = "已退出聊天室";
+                }
+            }
+
+            function send(msg) {
+                if (!window.WebSocket) {
+                    return;
+                }
+
+                if (socket.readyState == WebSocket.OPEN) {
+                    socket.send(msg);
+                    var ta = document.getElementById('msgTxt');
+                    ta.value = ta.value + '\n' + event.data;
+                } else {
+                    alert('socket连接没有打开');
+                }
+            }
+
+            document.getElementById('send').onclick = send;
+        }
+
+    </script>
+</form>
+</body>
+</html>
